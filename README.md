@@ -69,7 +69,7 @@ o Crie métodos sobrecarregados com intuito de facilitar a vida do usuário.
 * Utilize métodos get e set para acessar e modificar atributos privados.
 
 **5. Interface:**
-o Crie uma interface que representa cada entidade DAO e trabalhe sempre com essa interface.
+- Crie uma interface que representa cada entidade DAO e trabalhe sempre com essa interface.
 
 **6. Exceções:**
 - Crie exceções para cada operação que não possa ser concluída conforme o esperado.
