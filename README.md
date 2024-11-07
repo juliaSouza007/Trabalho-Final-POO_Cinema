@@ -13,10 +13,10 @@ Valor: 15 pontos
 # Requisitos:
 **1. Classes:**
 * (ANA JULIA) Crie uma classe abstrata Cinema com os seguintes atributos e métodos:
-* Atributos:
-  id (int) – Identificador único para o cinema.
-  nome (String) – Nome popular do cinema.
-  local (String) – Endereço do cinema.
+  * Atributos:
+    * id (int) – Identificador único para o cinema.
+    * nome (String) – Nome popular do cinema.
+    * local (String) – Endereço do cinema.
 - Métodos básicos:
   criarSala(...) – Cria uma sala no cinema.
   listarSalas() – Lista as salas do cinema e suas informações.
