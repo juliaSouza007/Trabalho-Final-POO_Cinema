@@ -18,9 +18,9 @@ Valor: 15 pontos
     * nome (String) – Nome popular do cinema.
     * local (String) – Endereço do cinema.
   * Métodos básicos:
-   * criarSala(...) – Cria uma sala no cinema.
-   * listarSalas() – Lista as salas do cinema e suas informações.
-   * listarCinemas() – Lista todos os cinemas criados.
+    * criarSala(...) – Cria uma sala no cinema.
+    * listarSalas() – Lista as salas do cinema e suas informações.
+    * listarCinemas() – Lista todos os cinemas criados.
 
 * (ANA JULIA) Crie classes concretas que herdem de Cinema: 
   * O objetivo é trabalhar o conceito de herança, então crie cinemas que representem cinemas reais.
