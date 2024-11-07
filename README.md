@@ -17,43 +17,43 @@ Valor: 15 pontos
     * id (int) – Identificador único para o cinema.
     * nome (String) – Nome popular do cinema.
     * local (String) – Endereço do cinema.
-- Métodos básicos:
-  criarSala(...) – Cria uma sala no cinema.
-  listarSalas() – Lista as salas do cinema e suas informações.
-  listarCinemas() – Lista todos os cinemas criados.
+  * Métodos básicos:
+   * criarSala(...) – Cria uma sala no cinema.
+   * listarSalas() – Lista as salas do cinema e suas informações.
+   * listarCinemas() – Lista todos os cinemas criados.
 
 * (ANA JULIA) Crie classes concretas que herdem de Cinema: 
-- O objetivo é trabalhar o conceito de herança, então crie cinemas que representem cinemas reais.
-- Como cada classe representará um único cinema, não deve ser possível ter mais de uma instância da classe concreta.
+  * O objetivo é trabalhar o conceito de herança, então crie cinemas que representem cinemas reais.
+  * Como cada classe representará um único cinema, não deve ser possível ter mais de uma instância da classe concreta.
 
 * (HEITOR) Crie uma classe para representar uma sala de um cinema com os seguintes atributos e métodos:
-- Atributos:
-  nome (String) – Nome da sala, único no cinema.
-  capacidade (int) – Capacidade da sala.
-- Métodos básicos:
-  criarSessao(Filme, DataHora) – Cria uma sessão para
-  exibir um filme específico em determinado horário.
-  listarSessoes() – Lista as sessões de uma sala.
+  * Atributos:
+    * nome (String) – Nome da sala, único no cinema.
+    * capacidade (int) – Capacidade da sala.
+  * Métodos básicos:
+    * criarSessao(Filme, DataHora) – Cria uma sessão para
+    * exibir um filme específico em determinado horário.
+    * listarSessoes() – Lista as sessões de uma sala.
 
 * (HEITOR) Crie uma classe para representar um Filme com os seguintes atributos e métodos: 
-- Atributos:
-  id (int) – Identificador do filme.
-  nome (String) – Nome do filme.
-  duracao_s (long) – Duração do filme, em segundos.
-- Métodos:
-  Me surpreenda!!!
+  * Atributos:
+    * id (int) – Identificador do filme.
+    * nome (String) – Nome do filme.
+    * duracao_s (long) – Duração do filme, em segundos.
+  * Métodos:
+    * Me surpreenda!!!
 
 * (JÚLIA) Crie uma classe para representar uma sessão com os seguintes atributos e métodos: 
-- Atributos:
-  id (int) – Identificador da sessão.
-  sala – Sala onde ocorrerá a sessão.
-  filme – Filme em exibição.
-  dataHora – Data e hora da sessão.
-- Métodos:
-  Me surpreenda!!!
+  * Atributos:
+    * id (int) – Identificador da sessão.
+    * sala – Sala onde ocorrerá a sessão.
+    * filme – Filme em exibição.
+    * dataHora – Data e hora da sessão.
+  * Métodos:
+    * Me surpreenda!!!
 
 * (JÚLIA) Crie uma classe para representar as vendas de ingressos. 
-- Me surpreenda!!!
+  * Me surpreenda!!!
   
 **2. Polimorfismo:**
 o Sempre que for geral, deve-se utilizar Cinema. Contudo, crie itens específicos para cada cinema de forma a diferenciá-lo dos demais.
