@@ -10,13 +10,15 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws FalhaConexaoException {
-        List<Cinema> cinemas = new ArrayList<>();
+        Cinema cineart = Cineart.obtemInstancia();
+        Cinema cinemark = Cinemark.obtemInstancia();
+        Cinema cinepolis = Cinepolis.obtemInstancia();
+        Cinema cinesercla = Cinesercla.obtemInstancia();
 
-        cinemas.add(org.teiacoltec.poo.Classes.Cineart.obtemCinema());
-        cinemas.add(org.teiacoltec.poo.Classes.Cinemark.obtemCinema());
+        List<Cinema> cinemasBD = CinemaDAO.carregar(Cinema.obtemListaCinemas());
 
-        CinemaDAO.criaTabela();
-        CinemaDAO.salvar(cinemas);
-
+        for (Cinema cinema : cinemasBD) {
+            System.out.println("Nome: " + cinema.getNome());
+        }
     }
 }
