@@ -152,7 +152,7 @@ public class CinemaDAO implements ICinemaDAO {
         }
     }
 
-    public static List<Cinema> carregar() throws FalhaConexaoException {
+    public static List<Cinema> carregar(List<Cinema> cinemas) throws FalhaConexaoException {
 
         try {
             // Estabelece conexao
@@ -163,16 +163,15 @@ public class CinemaDAO implements ICinemaDAO {
             ResultSet resultado = stmt.executeQuery("SELECT * from " + NOME_TABELA + " ORDER BY id;");
 
             // Crio a lista
-            List<Cinema> lista = new ArrayList<>();
+            List<Cinema> lista = new ArrayList<Cinema>();
 
             while (resultado.next()) {
-                // Obtenho os dados
-//                Cinema cinemaTmp = new Cinema(resultado.getInt(ID_POSICAO_TABELA),
-//                        resultado.getString(NOME_POSICAO_TABELA),
-//                        resultado.getString(LOCAL_POSICAO_TABELA)
-//                        );
-                // Adiciono à lista
-                // lista.add(cinemaTmp);
+                for (Cinema cinema : cinemas) {
+                    // Se o nome do cinema no banco for igual ao nome do cinema no sistema, adiciona na lista
+                    if (resultado.getString(NOME_POSICAO_TABELA).equals(cinema.getNome())) {
+                        lista.add(cinema.obtemCinema());
+                    }
+                }
             }
 
             // Retorna a lista preenchida
