@@ -33,7 +33,7 @@ public abstract class SalaDAO {
         try (Connection conn = Conexao.obtemConexao();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, sala.getId());
+            stmt.setInt(1, sala.getId());
             stmt.setString(2, sala.getNome());
             stmt.setInt(3, sala.getCapacidade());
             stmt.executeUpdate();
@@ -44,7 +44,7 @@ public abstract class SalaDAO {
             }
 
             return sala;
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao inserir  sala: " + e.getMessage());
             return null;
         }
@@ -60,9 +60,9 @@ public abstract class SalaDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new Sala(rs.getString("nome"), rs.getInt("capacidade"));
+                return new Sala(rs.getInt("id"), rs.getString("nome"), rs.getInt("capacidade"));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao buscar sala: " + e.getMessage());
         }
         return null;
@@ -77,9 +77,9 @@ public abstract class SalaDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                salas.add(new Sala(rs.getString("nome"), rs.getInt("capacidade")));
+                salas.add(new Sala(rs.getInt("id"), rs.getString("nome"), rs.getInt("capacidade")));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao buscar as salas: " + e.getMessage());
         }
         return salas;
@@ -96,7 +96,7 @@ public abstract class SalaDAO {
             stmt.setString(2, sala.getNome());
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao atualizar sala: " + e.getMessage());
         }
     }
@@ -111,7 +111,7 @@ public abstract class SalaDAO {
             stmt.setString(1, sala.getNome());
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao remover sala: " + e.getMessage());
         }
     }
