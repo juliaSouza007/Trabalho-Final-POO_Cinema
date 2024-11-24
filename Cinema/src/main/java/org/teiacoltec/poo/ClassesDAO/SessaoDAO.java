@@ -1,7 +1,7 @@
 package ClassesDAO;
 
 import conexao.Conexao;
-import Classes.Filmes;
+import Classes.Filme;
 import Classes.Sala;
 import Classes.Sessao;
 
@@ -9,11 +9,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class SessaoDAO implements MasterDAO<Sessao> {
+public class SessaoDAO {
 
-    @Override
+    // Método para salvar uma sessão
     public Sessao salvarSessao(Sessao sessao) {
-
         String sql = "INSERT INTO sessoes (nomeSala, idFilme, dataSessao) VALUES (?, ?, ?)";
 
         try (Connection conn = Conexao.obtemConexao();
@@ -35,7 +34,7 @@ public abstract class SessaoDAO implements MasterDAO<Sessao> {
         }
     }
 
-    @Override
+    // Método para buscar todas as sessões
     public ArrayList<Sessao> buscarTodasSessoes() {
         String sql = "SELECT * FROM sessoes";
         ArrayList<Sessao> sessoes = new ArrayList<>();
@@ -56,16 +55,17 @@ public abstract class SessaoDAO implements MasterDAO<Sessao> {
         return sessoes;
     }
 
+    // Método para buscar sessões por filme
     public ArrayList<Sessao> buscarSessoesPorFilme(Filme filme) {
         String sql = "SELECT * FROM sessoes WHERE idFilme = ?";
         ArrayList<Sessao> sessoes = new ArrayList<>();
-    
+
         try (Connection conn = Conexao.obtemConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+
             stmt.setInt(1, filme.getId());
             ResultSet rs = stmt.executeQuery();
-    
+
             while (rs.next()) {
                 Sala salaAssociada = new Sala(rs.getString("nomeSala"), 0); // Capacidade não disponível diretamente
                 Date dataSessao = new Date(rs.getTimestamp("dataSessao").getTime());
@@ -77,8 +77,7 @@ public abstract class SessaoDAO implements MasterDAO<Sessao> {
         return sessoes;
     }
 
-
-    @Override
+    // Método para atualizar uma sessão
     public void atualizarSessao(Sessao sessao) {
         String sql = "UPDATE sessoes SET nomeSala = ?, idFilme = ?, dataSessao = ? WHERE id = ?";
 
@@ -96,7 +95,7 @@ public abstract class SessaoDAO implements MasterDAO<Sessao> {
         }
     }
 
-    @Override
+    // Método para deletar uma sessão
     public void deletarSessao(Sessao sessao) {
         String sql = "DELETE FROM sessoes WHERE id = ?";
 
