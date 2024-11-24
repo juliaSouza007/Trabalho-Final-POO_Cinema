@@ -22,7 +22,24 @@ public class Sala {
     }
 
 
-    public void criarSessao() {
+    public void criarSessao(int id, Sala salaAssociada, Filmes filmeExibido, Date dataSessao) {
+
+        Sessao sessao = new Sessao(id, salaAssociada, filmeExibido, dataSessao);
+        this.sessao.add(sessao);
+
+        String sql = "INSERT INTO sessoes (id, sala_nome, filme_id, data) VALUES (?, ?, ?, ?)";
+        try (Connection conn = Conexao.obtemConexao();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.setString(2, salaAssociada.getNome());
+            stmt.setInt(3, filmeExibido.getId());
+            stmt.setTimestamp(4, new Timestamp(dataSessao.getTime()));
+            stmt.executeUpdate();
+
+        } catch (SQLException | FalhaConexaoException e) {
+            System.err.println("Erro ao criar sessão: " + e.getMessage());
+        }
        
     }
 
