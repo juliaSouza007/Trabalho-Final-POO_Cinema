@@ -12,8 +12,28 @@ import java.util.Date;
 
 public class SessaoDAO {
 
+    public static void criaTabela() throws FalhaConexaoException {
+        try {
+            // Estabelece conexao
+            Connection conexao = Conexao.obtemConexao();
+
+            // Faz a consulta
+            Statement stmt = conexao.createStatement();
+            stmt.execute("CREATE SCHEMA IF NOT EXISTS `coltec` DEFAULT CHARACTER SET utf8;");
+            stmt.execute("CREATE TABLE IF NOT EXISTS `coltec`.`sessao` (" +
+                    "`id` INT NOT NULL," +
+                    "`nomeSala` VARCHAR(255) NOT NULL," +
+                    "`data` DATETIME NOT NULL," +
+                    "`idFilme` INT NOT NULL," +
+                    "PRIMARY KEY (`id`)," +
+                    "FOREIGN KEY (`idFilme`) REFERENCES `coltec`.`filmes`(`id`)) ENGINE = InnoDB;");
+        } catch (SQLException e) {
+            throw new Error(e.getMessage());
+        }
+    }
+
     // Método para salvar uma sessão
-    public Sessao salvarSessao(Sessao sessao) {
+    public Sessao salvarSessao(Sessao sessao) throws FalhaConexaoException {
         String sql = "INSERT INTO sessoes (nomeSala, idFilme, dataSessao) VALUES (?, ?, ?)";
 
         try (Connection conn = Conexao.obtemConexao();
@@ -30,13 +50,12 @@ public class SessaoDAO {
             }
             return sessao;
         } catch (SQLException | FalhaConexaoException e) {
-            System.err.println("Erro ao salvar sessão: " + e.getMessage());
-            return null;
+            throw new FalhaConexaoException("Erro ao salvar sessão.");
         }
     }
 
     // Método para buscar todas as sessões
-    public ArrayList<Sessao> buscarTodasSessoes() {
+    public ArrayList<Sessao> buscarTodasSessoes() throws FalhaConexaoException {
         String sql = "SELECT * FROM sessoes";
         ArrayList<Sessao> sessoes = new ArrayList<>();
 
@@ -51,13 +70,13 @@ public class SessaoDAO {
                 sessoes.add(new Sessao(rs.getInt("id"), salaAssociada, filmeExibido, dataSessao));
             }
         } catch (SQLException | FalhaConexaoException e) {
-            System.err.println("Erro ao buscar todas as sessões: " + e.getMessage());
+            throw new FalhaConexaoException("Erro ao buscar todas as sessões.");
         }
         return sessoes;
     }
 
     // Método para buscar sessões por filme
-    public ArrayList<Sessao> buscarSessoesPorFilme(Filmes filme) {
+    public ArrayList<Sessao> buscarSessoesPorFilme(Filmes filme) throws FalhaConexaoException {
         String sql = "SELECT * FROM sessoes WHERE idFilme = ?";
         ArrayList<Sessao> sessoes = new ArrayList<>();
 
@@ -73,13 +92,13 @@ public class SessaoDAO {
                 sessoes.add(new Sessao(rs.getInt("id"), salaAssociada, filme, dataSessao));
             }
         } catch (SQLException | FalhaConexaoException e) {
-            System.err.println("Erro ao buscar sessões por filme: " + e.getMessage());
+            throw new FalhaConexaoException("Erro ao buscar sessões por filme.");
         }
         return sessoes;
     }
 
     // Método para atualizar uma sessão
-    public void atualizarSessao(Sessao sessao) {
+    public void atualizarSessao(Sessao sessao) throws FalhaConexaoException {
         String sql = "UPDATE sessoes SET nomeSala = ?, idFilme = ?, dataSessao = ? WHERE id = ?";
 
         try (Connection conn = Conexao.obtemConexao();
@@ -92,12 +111,12 @@ public class SessaoDAO {
             stmt.executeUpdate();
 
         } catch (SQLException | FalhaConexaoException e) {
-            System.err.println("Erro ao atualizar sessão: " + e.getMessage());
+            throw new FalhaConexaoException("Erro ao atualizar sessão.");
         }
     }
 
     // Método para deletar uma sessão
-    public void deletarSessao(Sessao sessao) {
+    public void deletarSessao(Sessao sessao) throws FalhaConexaoException {
         String sql = "DELETE FROM sessoes WHERE id = ?";
 
         try (Connection conn = Conexao.obtemConexao();
@@ -107,7 +126,7 @@ public class SessaoDAO {
             stmt.executeUpdate();
 
         } catch (SQLException | FalhaConexaoException e) {
-            System.err.println("Erro ao deletar sessão: " + e.getMessage());
+            throw new FalhaConexaoException("Erro ao deletar sessão.");
         }
     }
 }
