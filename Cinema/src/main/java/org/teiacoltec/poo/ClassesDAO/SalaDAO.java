@@ -6,7 +6,7 @@ import org.teiacoltec.poo.conexao.FalhaConexaoException;
 import java.sql.*;
 import java.util.ArrayList;
 
-public abstract class SalaDAO {
+public class SalaDAO {
 
     public static void criaTabela() throws FalhaConexaoException {
         try {
