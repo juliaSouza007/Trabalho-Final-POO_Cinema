@@ -1,13 +1,14 @@
 package org.teiacoltec.poo.Classes;
 
 public class Cinepolis extends Cinema{
-    // Apenas 9 salas
+    static private int proximoIDSala = 0;
 
     static private Cinepolis cinema = null;
 
     private Cinepolis() {
         super(obtemProximoID(), "Cinepólis Shopping Estação BH",
                                 "Av. Cristiano Machado, 11833 - Vila Cloris, Belo Horizonte - MG, 31565-000");
+        this.salas = new Sala[9];
         Cinema.addCinema(this);
     }
 
@@ -27,12 +28,12 @@ public class Cinepolis extends Cinema{
     }
 
     @Override
-    public void criarSala() {
-        System.out.println(" ");
-    }
-
-    @Override
-    public void listarSalas() {
-        System.out.println(" ");
+    public void criarSala(String nome, int capacidade) throws LimiteSalasException {
+        if (Cinepolis.proximoIDSala >= 10) {
+            throw new LimiteSalasException();
+        } else {
+            this.salas[Cinepolis.proximoIDSala] = (new Sala(Cinepolis.proximoIDSala, nome, capacidade));
+            Cinepolis.proximoIDSala++;
+        }
     }
 }
