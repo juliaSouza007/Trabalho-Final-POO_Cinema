@@ -36,7 +36,7 @@ public abstract class FilmesDAO {
 
             stmt.setInt(1, filme.getId());
             stmt.setString(2, filme.getNome());
-            stmt.setLong(3, filme.getDuracao_s());
+            stmt.setInt(3, filme.getDuracao_s());
             stmt.executeUpdate();
 
             return filme;
