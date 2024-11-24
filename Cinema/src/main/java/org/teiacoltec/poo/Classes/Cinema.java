@@ -9,6 +9,7 @@ public abstract class Cinema {
     private String local;
     static private List<Cinema> cinemas = new ArrayList<Cinema>();
     static private int proximoID = 0;
+    protected Sala[] salas;
 
     public Cinema(int id, String nome, String local) {
         this.id = id;
@@ -17,15 +18,27 @@ public abstract class Cinema {
     }
 
     // Cria sala no cinema
-    public void criarSala() {}
+    public void criarSala(String nome, int capacidade) throws LimiteSalasException {}
 
     // Lista as salas do cinema e suas informações
-    public void listarSalas() {}
+    public void listarSalas() {
+        boolean vazio = true;
+
+        for (int i = 0; i < salas.length; i++) {
+            if (salas[i] != null) {
+                System.out.println(salas[i].toString());
+                vazio = false;
+            }
+        }
+        if (vazio) {
+            System.out.println("Não há salas.");
+        }
+    }
 
     // Lista todos os cinemas criados
     public void listaCinemas() {
         for (Cinema cinema : cinemas) {
-            System.out.println("Nome: " + cinema.getNome() + "\nLocal: " + getLocal() + "\n");
+            System.out.println("NOME: " + cinema.getNome() + "\nLOCAL: " + getLocal() + "\n");
         }
     }
 
