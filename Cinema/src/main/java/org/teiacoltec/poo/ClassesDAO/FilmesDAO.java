@@ -1,7 +1,7 @@
-package org.teicoltec.poo.ClassesDAO;
+package org.teiacoltec.poo.ClassesDAO;
 
-import org.teicoltec.poo.conexao.Conexao;
-import org.teicoltec.poo.Classes.Filme;
+import org.teiacoltec.poo.conexao.Conexao;
+import org.teiacoltec.poo.Classes.Filmes;
 import org.teiacoltec.poo.conexao.FalhaConexaoException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public abstract class FilmesDAO {
 
 
 
-    public Filme insere(Filme filme) {
+    public Filmes insere(Filmes filme) {
         String sql = "INSERT INTO Filmes (id, nome, duracao_s) VALUES (?, ?, ?)";
 
         try (Connection conn = Conexao.obtemConexao();
@@ -36,17 +36,17 @@ public abstract class FilmesDAO {
 
             stmt.setInt(1, filme.getId());
             stmt.setString(2, filme.getNome());
-            stmt.setInt(3, filme.getDuracao_s());
+            stmt.setLong(3, filme.getDuracao_s());
             stmt.executeUpdate();
 
             return filme;
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao inserir filme: " + e.getMessage());
             return null;
         }
     }
 
-    public Filme buscarFilme(int id) {
+    public Filmes buscarFilme(int id) {
 
         String sql = "SELECT * FROM Filmes WHERE id = ?";
         try (Connection conn = Conexao.obtemConexao();
@@ -56,33 +56,33 @@ public abstract class FilmesDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new Filme(rs.getInt("id"), rs.getString("nome"), rs.getLong("duracao_s"));
+                return new Filmes(rs.getInt("id"), rs.getLong("duracao_s"), rs.getString("nome"));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao buscar filme: " + e.getMessage());
         }
         return null;
     }
 
-    public ArrayList<Filme> buscarFilmes() {
+    public ArrayList<Filmes> buscarFilmes() {
 
         String sql = "SELECT * FROM Filmes";
-        ArrayList<Filme> filmes = new ArrayList<>();
+        ArrayList<Filmes> filmes = new ArrayList<>();
         try (Connection conn = Conexao.obtemConexao();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                filmes.add(new Filme(rs.getInt("id"), rs.getString("nome"), rs.getLong("duracao_s")));
+                filmes.add(new Filmes(rs.getInt("id"), rs.getLong("duracao_s"), rs.getString("nome")));
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao buscar filmes: " + e.getMessage());
         }
         return filmes;
     }
 
-    public void atualiza(Filme filme) {
+    public void atualiza(Filmes filme) {
 
         String sql = "UPDATE Filmes SET nome = ?, duracao_s = ? WHERE id = ?";
 
@@ -94,12 +94,12 @@ public abstract class FilmesDAO {
             stmt.setInt(3, filme.getId());
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao atualizar filme: " + e.getMessage());
         }
     }
 
-    public void remove(Filme filme) {
+    public void remove(Filmes filme) {
         String sql = "DELETE FROM Filmes WHERE id = ?";
 
         try (Connection conn = Conexao.obtemConexao();
@@ -108,7 +108,7 @@ public abstract class FilmesDAO {
             stmt.setInt(1, filme.getId());
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao remover filme: " + e.getMessage());
         }
     }
