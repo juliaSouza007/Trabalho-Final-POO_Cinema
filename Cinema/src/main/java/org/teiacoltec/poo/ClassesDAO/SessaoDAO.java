@@ -1,9 +1,9 @@
-package DAOs;
+package ClassesDAO;
 
-import Connections.Conexao;
-import Filmes.Filme;
-import Salas.Sala;
-import Sessoes.Sessao;
+import conexao.Conexao;
+import Classes.Filmes;
+import Classes.Sala;
+import Classes.Sessao;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public abstract class SessaoDAO implements MasterDAO<Sessao> {
 
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
-                sessao.setIdentificador(rs.getInt(1));
+                sessao.setId(rs.getInt(1));
             }
             return sessao;
         } catch (SQLException e) {
@@ -88,7 +88,7 @@ public abstract class SessaoDAO implements MasterDAO<Sessao> {
             stmt.setString(1, sessao.getSalaAssociada().getNome());
             stmt.setInt(2, sessao.getFilmeExibido().getId());
             stmt.setTimestamp(3, new Timestamp(sessao.getDataSessao().getTime()));
-            stmt.setInt(4, sessao.getIdentificador());
+            stmt.setInt(4, sessao.getId());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -103,7 +103,7 @@ public abstract class SessaoDAO implements MasterDAO<Sessao> {
         try (Connection conn = Conexao.obtemConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, sessao.getIdentificador());
+            stmt.setInt(1, sessao.getId());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
