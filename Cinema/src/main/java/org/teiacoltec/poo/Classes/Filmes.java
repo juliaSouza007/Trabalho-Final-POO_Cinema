@@ -1,16 +1,16 @@
-package org.teicoltec.poo.Classes;
+package org.teiacoltec.poo.Classes;
 
-import org.teicoltec.poo.conexao.Conexao;
-import org.teicoltec.poo.ClassesDAO.FilmesDAO;
+import org.teiacoltec.poo.conexao.Conexao;
+import org.teiacoltec.poo.ClassesDAO.FilmesDAO;
 import java.util.ArrayList;
 
 public class Filmes {
    
     private int id;
-    private int duracao_s;
+    private long duracao_s;
     private String nome;
    
-    public Filmes(int id, int duracao_s ,String nome) {
+    public Filmes(int id, long duracao_s ,String nome) {
         
         this.id = id;
         this.duracao_s = duracao_s;
