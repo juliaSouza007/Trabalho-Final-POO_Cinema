@@ -1,6 +1,6 @@
 package org.teiacoltec.poo.Classes;
 
-import org.teiacoltec.pooClassesDAO.SessaoDAO;
+import org.teiacoltec.poo.ClassesDAO.SessaoDAO;
 import org.teiacoltec.poo.Classes.Sala;
 import org.teiacoltec.poo.Classes.Filmes;
 
