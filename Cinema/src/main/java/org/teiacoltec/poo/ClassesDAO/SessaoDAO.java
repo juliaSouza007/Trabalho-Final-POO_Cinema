@@ -1,9 +1,11 @@
 package org.teiacoltec.poo.ClassesDAO;
 
+import org.teiacoltec.poo.Classes.Filmes;
 import org.teiacoltec.poo.conexao.Conexao;
 import org.teiacoltec.poo.Classes.Filme;
 import org.teiacoltec.poo.Classes.Sala;
 import org.teiacoltec.poo.Classes.Sessao;
+import org.teiacoltec.poo.conexao.FalhaConexaoException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class SessaoDAO {
                 sessao.setId(rs.getInt(1));
             }
             return sessao;
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao salvar sessão: " + e.getMessage());
             return null;
         }
@@ -44,19 +46,19 @@ public class SessaoDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Sala salaAssociada = new Sala(rs.getString("nomeSala"), 0); // Capacidade não disponível diretamente
-                Filme filmeExibido = new Filme(rs.getInt("idFilme"), "Placeholder", 0); // Detalhes adicionais devem ser buscados
+                Sala salaAssociada = new Sala(rs.getInt("idSala"), "sala 1", 100); // Capacidade não disponível diretamente
+                Filmes filmeExibido = new Filmes(rs.getInt("idFilme"), 230, "moana"); // Detalhes adicionais devem ser buscados
                 Date dataSessao = new Date(rs.getTimestamp("dataSessao").getTime());
                 sessoes.add(new Sessao(rs.getInt("id"), salaAssociada, filmeExibido, dataSessao));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao buscar todas as sessões: " + e.getMessage());
         }
         return sessoes;
     }
 
     // Método para buscar sessões por filme
-    public ArrayList<Sessao> buscarSessoesPorFilme(Filme filme) {
+    public ArrayList<Sessao> buscarSessoesPorFilme(Filmes filme) {
         String sql = "SELECT * FROM sessoes WHERE idFilme = ?";
         ArrayList<Sessao> sessoes = new ArrayList<>();
 
@@ -67,11 +69,11 @@ public class SessaoDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Sala salaAssociada = new Sala(rs.getString("nomeSala"), 0); // Capacidade não disponível diretamente
+                Sala salaAssociada = new Sala(rs.getInt("idSala"), "nomeSala", 100); // Capacidade não disponível diretamente
                 Date dataSessao = new Date(rs.getTimestamp("dataSessao").getTime());
                 sessoes.add(new Sessao(rs.getInt("id"), salaAssociada, filme, dataSessao));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao buscar sessões por filme: " + e.getMessage());
         }
         return sessoes;
@@ -90,7 +92,7 @@ public class SessaoDAO {
             stmt.setInt(4, sessao.getId());
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao atualizar sessão: " + e.getMessage());
         }
     }
@@ -105,7 +107,7 @@ public class SessaoDAO {
             stmt.setInt(1, sessao.getId());
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | FalhaConexaoException e) {
             System.err.println("Erro ao deletar sessão: " + e.getMessage());
         }
     }
