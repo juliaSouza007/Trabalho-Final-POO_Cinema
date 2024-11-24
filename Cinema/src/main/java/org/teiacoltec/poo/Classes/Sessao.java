@@ -1,6 +1,8 @@
-import ClassesDAO.SessaoDAO;
-import Sala;
-import Filmes;
+import org.teiacoltec.pooClassesDAO.SessaoDAO;
+
+import org.teiacoltec.poo.Classes.Sala;
+import org.teiacoltec.poo.Classes.Filmes;
+
 import java.util.Date;
 
 public class Sessao {
