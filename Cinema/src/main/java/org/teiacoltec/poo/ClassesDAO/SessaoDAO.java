@@ -2,7 +2,6 @@ package org.teiacoltec.poo.ClassesDAO;
 
 import org.teiacoltec.poo.Classes.Filmes;
 import org.teiacoltec.poo.conexao.Conexao;
-import org.teiacoltec.poo.Classes.Filme;
 import org.teiacoltec.poo.Classes.Sala;
 import org.teiacoltec.poo.Classes.Sessao;
 import org.teiacoltec.poo.conexao.FalhaConexaoException;
