@@ -1,12 +1,13 @@
 package org.teiacoltec.poo.Classes;
 
-import Connections.Conexao;
+import org.teiacoltec.poo.conexao.Conexao;
 import org.teiacoltec.poo.ClassesDAO.SalaDAO;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Sala {
 
+    private final int id;
     private String nome;
     private int capacidade;
     private ArrayList<Sessao> sessao;
