@@ -10,19 +10,28 @@ public class Sessao {
     private Date dataSessao;
     private SessaoDAO sessaoDAO;
 
-    public Sessao(int identificador, Sala salaAssociada, Filme filmeExibido, Date dataSessao) {
-        this.identificador = identificador;
+    public Sessao(int id, Sala salaAssociada, Filme filmeExibido, Date dataSessao) {
+        this.id = id;
         this.salaAssociada = salaAssociada;
         this.filmeExibido = filmeExibido;
         this.dataSessao = dataSessao;
     }
 
-    public int getIdentificador() {
-        return identificador;
+    @Override
+    public String toString() {
+        return "ID: " + this.identificador + '\n' +
+               "Sala: " + this.salaAssociada.getNome() + '\n' +
+               "Filme: " + this.filmeExibido.getNome() + '\n' +
+               "Data: " + this.dataSessao;
     }
 
-    public void setIdentificador(int identificador) {
-        this.identificador = identificador;
+    //getters e setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Sala getSalaAssociada() {
@@ -35,13 +44,5 @@ public class Sessao {
 
     public Date getDataSessao() {
         return dataSessao;
-    }
-
-    @Override
-    public String toString() {
-        return "ID: " + this.identificador + '\n' +
-               "Sala: " + this.salaAssociada.getNome() + '\n' +
-               "Filme: " + this.filmeExibido.getNome() + '\n' +
-               "Data: " + this.dataSessao;
     }
 }
