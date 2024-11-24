@@ -4,7 +4,7 @@ import Filmes;
 import java.util.Date;
 
 public class Sessao {
-    private int identificador;
+    private int id;
     private Sala salaAssociada;
     private Filme filmeExibido;
     private Date dataSessao;
@@ -19,7 +19,7 @@ public class Sessao {
 
     @Override
     public String toString() {
-        return "ID: " + this.identificador + '\n' +
+        return "ID: " + this.id + '\n' +
                "Sala: " + this.salaAssociada.getNome() + '\n' +
                "Filme: " + this.filmeExibido.getNome() + '\n' +
                "Data: " + this.dataSessao;
