@@ -1,9 +1,9 @@
-package ClassesDAO;
+package org.teiacoltec.poo.ClassesDAO;
 
-import conexao.Conexao;
-import Classes.Filme;
-import Classes.Sala;
-import Classes.Sessao;
+import org.teiacoltec.poo.conexao.Conexao;
+import org.teiacoltec.poo.Classes.Filme;
+import org.teiacoltec.poo.Classes.Sala;
+import org.teiacoltec.poo.Classes.Sessao;
 
 import java.sql.*;
 import java.util.ArrayList;
