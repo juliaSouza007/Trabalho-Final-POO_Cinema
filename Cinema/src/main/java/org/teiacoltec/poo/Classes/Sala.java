@@ -7,14 +7,14 @@ import java.util.Date;
 
 public class Sala {
 
-    private final int id;
+    private int id;
     private String nome;
     private int capacidade;
     private ArrayList<Sessao> sessao;
 
 
-    public Sala(String nome, int capacidade) {
-
+    public Sala(int id, String nome, int capacidade) {
+        this.id = id;
         this.nome = nome;
         this.capacidade = capacidade;
         this.sessao = new ArrayList<>();
