@@ -112,4 +112,31 @@ public class FilmesDAO {
             System.err.println("Erro ao remover filme: " + e.getMessage());
         }
     }
+
+    public static List<Filmes> carregar() throws FalhaConexaoException {
+        try {
+            Connection conexao = Conexao.obtemConexao();
+
+            Statement stmt = conexao.createStatement();
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM Salas ORDER BY id;");
+
+            List<Filmes> lista = new ArrayList<Filmes>();
+
+            while (resultado.next()) {
+                int id = resultado.getInt("id");
+                String  nome = resultado.getString("nome");
+                long duracao_s = resultado.getLong("duracao_s");
+
+                Filmes filme = new Filmes(id, duracao_s ,nome);
+
+                lista.add(filme);
+            }
+
+            // Retorna a lista com todas as sessões
+            return lista;
+
+        } catch (SQLException e) {
+            throw new FalhaConexaoException("Erro ao carregar os filmes: " + e.getMessage());
+        }
+    }
 }
