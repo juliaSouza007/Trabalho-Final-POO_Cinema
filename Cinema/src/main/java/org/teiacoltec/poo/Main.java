@@ -29,7 +29,7 @@ public class Main {
 //        FilmesDAO.insere(filme3);
 
         List<Cinema> cinemasBD = CinemaDAO.carregar(Cinema.obtemListaCinemas());
-        
+
         // Menu principal
         int opcao;
         do {
@@ -251,6 +251,7 @@ public class Main {
                         System.out.println("2. Ver Sessões");
                         System.out.println("3. Ver cinemas");
                         System.out.println("4. Selecionar cinema");
+                        System.out.println("5. Comprar Ingresso");
                         System.out.println("0. Voltar");
                         System.out.print("Escolha uma opção: ");
                         opcaoUsuario = scanner.nextInt();
@@ -258,7 +259,7 @@ public class Main {
 
                         switch (opcaoUsuario) {
                             case 1:
-                                 ArrayList<Filmes> filmes = new FilmesDAO().buscarFilmes();
+                                ArrayList<Filmes> filmes = new FilmesDAO().buscarFilmes();
                                 for (Filmes filme : filmes) {
                                     System.out.println("ID: " + filme.getId() + " | Duração: " + filme.getDuracao_s() + " | Filme: " + filme.getNome());
                                 }
@@ -308,6 +309,57 @@ public class Main {
                                 break;
                         }
                     } while (opcaoUsuario != 0);
+                    break;
+                case 5:
+                    System.out.println("<< Comprar Ingresso >>");
+                    ArrayList<Sessao> sessoesDisponiveis = new SessaoDAO().buscarTodasSessoes();
+
+                    if (sessoesDisponiveis.isEmpty()) {
+                        System.out.println("Não há sessões disponíveis no momento.");
+                        break;
+                    }
+
+                    System.out.println("Escolha uma das sessões disponíveis:");
+                    for (Sessao sessao : sessoesDisponiveis) {
+                        System.out.println("ID: " + sessao.getId() +
+                                " | Sala: " + sessao.getSalaAssociada().getNome() +
+                                " | Filme: " + sessao.getFilmeExibido().getNome() +
+                                " | Data: " + sessao.getDataSessao());
+                    }
+
+                    System.out.print("Digite o ID da sessão escolhida: ");
+                    int idSessaoEscolhida = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Sessao sessaoEscolhida = null;
+                    for (Sessao sessao : sessoesDisponiveis) {
+                        if (sessao.getId() == idSessaoEscolhida) {
+                            sessaoEscolhida = sessao;
+                            break;
+                        }
+                    }
+
+                    if (sessaoEscolhida == null) {
+                        System.out.println("Sessão não encontrada.");
+                        break;
+                    }
+
+                    System.out.print("Digite a quantidade de ingressos que deseja comprar: ");
+                    int quantidadeIngressos = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (quantidadeIngressos <= 0) {
+                        System.out.println("Quantidade inválida.");
+                        break;
+                    }
+
+                    // Registrar a compra (implementação simples)
+                    //Vendas novaVenda = new Vendas(0, sessaoEscolhida.getSalaAssociada(),
+                            java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), quantidadeIngressos * 20.0, List.of(sessaoEscolhida.getFilmeExibido()));
+
+                    //VendasDAO.salvar(novaVenda);
+                    System.out.println("Compra realizada com sucesso! Você comprou " + quantidadeIngressos + " ingressos para o filme " +
+                            sessaoEscolhida.getFilmeExibido().getNome() + " na sala " + sessaoEscolhida.getSalaAssociada().getNome() + ".");
                     break;
 
                 case 0:
