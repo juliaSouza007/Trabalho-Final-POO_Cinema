@@ -38,7 +38,7 @@ public abstract class Cinema {
     // Lista todos os cinemas criados
     static public void listaCinemas() {
         for (Cinema cinema : cinemas) {
-            System.out.println("NOME: " + cinema.getNome() + "\nLOCAL: " + getLocal() + "\n");
+            System.out.println("NOME: " + cinema.getNome() + "\nLOCAL: " + cinema.getLocal() + "\n");
         }
     }
 
