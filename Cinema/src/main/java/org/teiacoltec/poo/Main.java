@@ -12,12 +12,21 @@ public class Main {
 
     public static void main(String[] args) throws FalhaConexaoException {
         Scanner scanner = new Scanner(System.in);
-        Cinema cineart = Cineart.obtemInstancia();
-        Cinema cinemark = Cinemark.obtemInstancia();
-        Cinema cinepolis = Cinepolis.obtemInstancia();
-        Cinema cinesercla = Cinesercla.obtemInstancia();
 
-        List<Cinema> cinemasBD = CinemaDAO.carregar(Cinema.obtemListaCinemas());
+//        Cinema cineart = Cineart.obtemInstancia();
+//        Cinema cinemark = Cinemark.obtemInstancia();
+//        Cinema cinepolis = Cinepolis.obtemInstancia();
+//        Cinema cinesercla = Cinesercla.obtemInstancia();
+//
+//        // Carrega os cinemas do Banco de Dados
+//        Cinema.setListaCinemas(CinemaDAO.carregar(Cinema.obtemListaCinemas()));
+//
+//        Filmes filme1 = new Filmes(1, 9600, "Wicked");
+//        FilmesDAO.insere(filme1);
+//        Filmes filme2 = new Filmes(2, 8220, "Ainda Estou Aqui");
+//        FilmesDAO.insere(filme2);
+//        Filmes filme3 = new Filmes(3, 6000, "Moana 2");
+//        FilmesDAO.insere(filme3);
 
         // Menu principal
         int opcao;
@@ -38,6 +47,7 @@ public class Main {
                         System.out.println("\n<< MENU ADMINISTRADOR >>");
                         System.out.println("1. Ver Cinemas");
                         System.out.println("2. Gerenciar Sessões");
+                        System.out.println("3. Gerenciar Cinemas");
                         System.out.println("0. Voltar");
                         System.out.print("Escolha uma opção: ");
                         opcaoAdmin = scanner.nextInt();
@@ -46,9 +56,7 @@ public class Main {
                         switch (opcaoAdmin) {
                             case 1:
                                 // Ver Cinemas cadastrados
-                                for (Cinema cinema : cinemasBD) {
-                                    System.out.println("Nome: " + cinema.getNome());
-                                }
+                                Cinema.listaCinemas();
                                 break;
                             case 2:
                                 // Gerenciar Sessões
@@ -57,8 +65,9 @@ public class Main {
                                     System.out.println("\n*** Gerenciar Sessões ***");
                                     System.out.println("1. Adicionar Sessão");
                                     System.out.println("2. Listar Sessões");
-                                    System.out.println("3. Deletar Sessão");
-                                    System.out.println("0. Voltar");
+                                    System.out.println("3. Atualizar Sessão");
+                                    System.out.println("4. Deletar Sessão");
+                                    System.out.println("5. Voltar");
                                     System.out.print("Escolha uma opção: ");
                                     opcaoSessao = scanner.nextInt();
                                     scanner.nextLine(); // Limpar o buffer
@@ -92,6 +101,8 @@ public class Main {
                                             }
                                             break;
                                         case 3:
+                                            break;
+                                        case 4:
                                             // Deletar Sessão
                                             System.out.print("Digite o ID da sessão a ser deletada: ");
                                             int idSessaoDelete = scanner.nextInt();
@@ -100,14 +111,112 @@ public class Main {
                                             new SessaoDAO().deletarSessao(sessaoDelete);
                                             System.out.println("Sessão deletada com sucesso!");
                                             break;
-                                        case 0:
+                                        case 5:
                                             // Voltar ao menu principal
                                             System.out.println("Voltando ao menu principal...");
                                             break;
                                         default:
                                             System.out.println("Opção inválida, tente novamente.");
+                                            break;
                                     }
                                 } while (opcaoSessao != 5);
+                                break;
+                            case 3:
+                                // Gerenciar Cinemas
+                                int opcaoCinema;
+                                do {
+                                    System.out.println("\n*** Gerenciar Cinemas ***");
+                                    System.out.println("1. Adicionar sala");
+                                    System.out.println("2. Listar salas");
+                                    System.out.println("3. Atualizar dados do cinema");
+                                    System.out.println("4. Remover cinema");
+                                    System.out.println("0. Voltar");
+                                    System.out.println("------------------ Lista de Cinemas ------------------");
+                                    for (Cinema cinema : Cinema.obtemListaCinemas()) {
+                                        System.out.println("ID: " + cinema.getId() + ". " + cinema.getNome());
+                                    }
+                                    System.out.println("------------------------------------------------------");
+                                    System.out.print("Escolha uma opção: ");
+                                    opcaoCinema = scanner.nextInt();
+                                    scanner.nextLine(); // Limpar o buffer
+
+                                    int c;
+                                    System.out.println("Digite o ID do cinema: ");
+                                    c = scanner.nextInt();
+                                    scanner.nextLine();
+
+                                    boolean achou = false;
+
+                                    for (Cinema cinema : Cinema.obtemListaCinemas()) {
+                                        if (cinema.getId() == c) {
+                                            achou = true;
+                                        }
+                                    }
+
+                                    if (achou) {
+                                        switch (opcaoCinema) {
+                                            case 1:
+                                                System.out.println("Digite o nome da sala: ");
+                                                String nomeSala = scanner.nextLine();
+                                                scanner.nextLine();
+                                                System.out.println("Digite a capacidade da sala: ");
+                                                int capacidadeSala = scanner.nextInt();
+                                                scanner.nextLine();
+                                                try {
+                                                    Cinema.obtemListaCinemas().get(c).criarSala(nomeSala, capacidadeSala);
+                                                } catch (LimiteSalasException e) {
+                                                    System.out.println(e);
+                                                }
+                                                break;
+                                            case 2:
+                                                Cinema.obtemListaCinemas().get(c).listarSalas();
+                                                break;
+                                            case 3:
+                                                int escolha;
+                                                do {
+                                                    System.out.println("\n*** Atulizar ***");
+                                                    System.out.println("1. Nome");
+                                                    System.out.println("2. Local");
+                                                    System.out.println("0. Voltar");
+                                                    System.out.print("Escolha uma opção: ");
+                                                    escolha = scanner.nextInt();
+                                                    scanner.nextLine(); // Limpar o buffer
+
+                                                    switch (escolha) {
+                                                        case 1:
+                                                            System.out.println("Digite o novo nome do cinema: ");
+                                                            String novoNome = scanner.nextLine();
+                                                            scanner.nextLine();
+                                                            Cinema.obtemListaCinemas().get(c).setNome(novoNome);
+                                                            break;
+                                                        case 2:
+                                                            System.out.println("Digite o novo local do cinema: ");
+                                                            String novoLocal = scanner.nextLine();
+                                                            scanner.nextLine();
+                                                            Cinema.obtemListaCinemas().get(c).setNome(novoLocal);
+                                                            break;
+                                                        default:
+                                                            System.out.println("Opção inválida, tente novamente.");
+                                                            break;
+                                                    }
+                                                } while (escolha != 0);
+                                            case 4:
+                                                try {
+                                                    CinemaDAO.remove(Cinema.obtemListaCinemas().get(c));
+                                                    Cinema.obtemListaCinemas().remove(c);
+                                                    System.out.println("Cinema removido!");
+                                                } catch (CinemaNaoEncontradaException e) {
+                                                    System.out.println(e);
+                                                }
+                                                break;
+                                            default:
+                                                System.out.println("Opção inválida, tente novamente.");
+                                                break;
+                                        }
+                                    } else {
+                                        System.out.println("Cinema não encontrado");
+                                    }
+                                } while (opcaoCinema != 0);
                                 break;
                             case 0:
                                 // Voltar ao menu principal
@@ -115,6 +224,7 @@ public class Main {
                                 break;
                             default:
                                 System.out.println("Opção inválida, tente novamente.");
+                                break;
                         }
                     } while (opcaoAdmin != 0);
                     break;
@@ -126,6 +236,8 @@ public class Main {
                         System.out.println("\n<< MENU USUÁRIO >>");
                         System.out.println("1. Ver Filmes em Cartaz");
                         System.out.println("2. Ver Sessões");
+                        System.out.println("3. Ver cinemas");
+                        System.out.println("4. Selecionar cinema");
                         System.out.println("0. Voltar");
                         System.out.print("Escolha uma opção: ");
                         opcaoUsuario = scanner.nextInt();
@@ -142,12 +254,43 @@ public class Main {
                                     System.out.println("Sessão ID: " + sessao.getId() + " | Sala: " + sessao.getSalaAssociada().getNome() + " | Filme: " + sessao.getFilmeExibido().getNome() + " | Data: " + sessao.getDataSessao());
                                 }
                                 break;
+                            case 3:
+                                Cinema.listaCinemas();
+                                break;
+                            case 4:
+                                System.out.println("------------------ Lista de Cinemas ------------------");
+                                for (int i = 0; i < Cinema.obtemListaCinemas().size(); i++) {
+                                    System.out.println((i+1) + ". " + Cinema.obtemListaCinemas().get(i).getNome());
+                                }
+                                System.out.println("------------------------------------------------------");
+                                int escolhaCinema;
+                                System.out.println("Digite o número do cinema: ");
+                                escolhaCinema = scanner.nextInt();
+                                scanner.nextLine();
+
+                                if (0 < escolhaCinema && escolhaCinema <= Cinema.obtemListaCinemas().size()) {
+                                    Cinema cinema = Cinema.obtemListaCinemas().get(escolhaCinema);
+
+                                    // Verifica qual cinema foi escolhido e mostra suas funcionalidades extras
+                                    if (cinema instanceof Cineart) {
+                                        System.out.println("------------------ Lanches Cineart ------------------");
+                                        System.out.println("1. Menu");
+                                        System.out.println("2. Comprar");
+                                        System.out.println("-----------------------------------------------------");
+                                        ((Cineart) cinema).listaLanches();
+                                    }
+                                } else {
+                                    System.out.println("Cinema não encintrado.");
+                                }
+
+                                break;
                             case 0:
                                 // Voltar ao menu principal
                                 System.out.println("Voltando ao menu principal...");
                                 break;
                             default:
                                 System.out.println("Opção inválida, tente novamente.");
+                                break;
                         }
                     } while (opcaoUsuario != 0);
                     break;
