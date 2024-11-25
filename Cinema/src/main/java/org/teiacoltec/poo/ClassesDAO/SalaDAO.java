@@ -115,4 +115,31 @@ public class SalaDAO {
             System.err.println("Erro ao remover sala: " + e.getMessage());
         }
     }
+
+    public static List<Sala> carregar() throws FalhaConexaoException {
+        try {
+            Connection conexao = Conexao.obtemConexao();
+
+            Statement stmt = conexao.createStatement();
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM Salas ORDER BY id;");
+
+            List<Sala> lista = new ArrayList<Sala>();
+
+            while (resultado.next()) {
+                int id = resultado.getInt("id");
+                String  nome = resultado.getString("nome");
+                int capacidade = resultado.getInt("capacidade");
+
+                Sala sala = new Sala(id, nome, capacidade);
+
+                lista.add(sala);
+            }
+
+            // Retorna a lista com todas as sessões
+            return lista;
+
+        } catch (SQLException e) {
+            throw new FalhaConexaoException("Erro ao carregar as salas: " + e.getMessage());
+        }
+    }
 }
