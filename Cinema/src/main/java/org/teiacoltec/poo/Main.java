@@ -19,13 +19,6 @@ public class Main {
 
         List<Cinema> cinemasBD = CinemaDAO.carregar(Cinema.obtemListaCinemas());
 
-        Filmes filme1 = new Filmes(1, 9600, "Wicked");
-        new FilmesDAO().insere(filme1);
-        Filmes filme2 = new Filmes(2, 8220, "Ainda Estou Aqui");
-        new FilmesDAO().insere(filme2);
-        Filmes filme3 = new Filmes(3, 6000, "Moana 2");
-        new FilmesDAO().insere(filme3);
-
         // Menu principal
         int opcao;
         do {
@@ -64,9 +57,8 @@ public class Main {
                                     System.out.println("\n*** Gerenciar Sessões ***");
                                     System.out.println("1. Adicionar Sessão");
                                     System.out.println("2. Listar Sessões");
-                                    System.out.println("3. Atualizar Sessão");
-                                    System.out.println("4. Deletar Sessão");
-                                    System.out.println("5. Voltar");
+                                    System.out.println("3. Deletar Sessão");
+                                    System.out.println("0. Voltar");
                                     System.out.print("Escolha uma opção: ");
                                     opcaoSessao = scanner.nextInt();
                                     scanner.nextLine(); // Limpar o buffer
@@ -100,8 +92,6 @@ public class Main {
                                             }
                                             break;
                                         case 3:
-                                            break;
-                                        case 4:
                                             // Deletar Sessão
                                             System.out.print("Digite o ID da sessão a ser deletada: ");
                                             int idSessaoDelete = scanner.nextInt();
@@ -110,7 +100,7 @@ public class Main {
                                             new SessaoDAO().deletarSessao(sessaoDelete);
                                             System.out.println("Sessão deletada com sucesso!");
                                             break;
-                                        case 5:
+                                        case 0:
                                             // Voltar ao menu principal
                                             System.out.println("Voltando ao menu principal...");
                                             break;
