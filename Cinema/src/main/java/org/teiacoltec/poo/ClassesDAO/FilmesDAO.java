@@ -6,7 +6,7 @@ import org.teiacoltec.poo.conexao.FalhaConexaoException;
 import java.sql.*;
 import java.util.ArrayList;
 
-public abstract class FilmesDAO {
+public class FilmesDAO {
 
     public static void criaTabela() throws FalhaConexaoException {
         try {
@@ -28,7 +28,7 @@ public abstract class FilmesDAO {
 
 
 
-    public Filmes insere(Filmes filme) {
+    public static Filmes insere(Filmes filme) {
         String sql = "INSERT INTO Filmes (id, nome, duracao_s) VALUES (?, ?, ?)";
 
         try (Connection conn = Conexao.obtemConexao();
@@ -46,7 +46,7 @@ public abstract class FilmesDAO {
         }
     }
 
-    public Filmes buscarFilme(int id) {
+    public static Filmes buscarFilme(int id) {
 
         String sql = "SELECT * FROM Filmes WHERE id = ?";
         try (Connection conn = Conexao.obtemConexao();
@@ -64,7 +64,7 @@ public abstract class FilmesDAO {
         return null;
     }
 
-    public ArrayList<Filmes> buscarFilmes() {
+    public static ArrayList<Filmes> buscarFilmes() {
 
         String sql = "SELECT * FROM Filmes";
         ArrayList<Filmes> filmes = new ArrayList<>();
@@ -82,7 +82,7 @@ public abstract class FilmesDAO {
         return filmes;
     }
 
-    public void atualiza(Filmes filme) {
+    public static void atualiza(Filmes filme) {
 
         String sql = "UPDATE Filmes SET nome = ?, duracao_s = ? WHERE id = ?";
 
@@ -99,7 +99,7 @@ public abstract class FilmesDAO {
         }
     }
 
-    public void remove(Filmes filme) {
+    public static void remove(Filmes filme) {
         String sql = "DELETE FROM Filmes WHERE id = ?";
 
         try (Connection conn = Conexao.obtemConexao();
