@@ -28,6 +28,8 @@ public class Main {
 //        Filmes filme3 = new Filmes(3, 6000, "Moana 2");
 //        FilmesDAO.insere(filme3);
 
+        List<Cinema> cinemasBD = CinemaDAO.carregar(Cinema.obtemListaCinemas());
+        
         // Menu principal
         int opcao;
         do {
@@ -48,6 +50,7 @@ public class Main {
                         System.out.println("1. Ver Cinemas");
                         System.out.println("2. Gerenciar Sessões");
                         System.out.println("3. Gerenciar Cinemas");
+                        System.out.println("4. Acessar Vendas");
                         System.out.println("0. Voltar");
                         System.out.print("Escolha uma opção: ");
                         opcaoAdmin = scanner.nextInt();
@@ -217,6 +220,16 @@ public class Main {
                                         System.out.println("Cinema não encontrado");
                                     }
                                 } while (opcaoCinema != 0);
+                                break;
+                            case 4:
+                                List<Vendas> vendas = VendasDAO.carregar(cinemasBD);
+                                for (Vendas venda : vendas) {
+                                    System.out.println("Venda ID: " + venda.getId() +
+                                            " | Cinema: " + venda.getCinema().getNome() +
+                                            " | Data: " + venda.getData() +
+                                            " | Total: " + venda.getValorTotal() +
+                                            " | Filmes: " + venda.getFilmes().size());
+                                }
                                 break;
                             case 0:
                                 // Voltar ao menu principal
