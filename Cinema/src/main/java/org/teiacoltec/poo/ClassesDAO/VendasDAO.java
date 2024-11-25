@@ -140,18 +140,51 @@ public class VendasDAO {
         return filmes;
     }
 
-    // Método para remover uma venda do banco de dados
-    public static void remover(int id) throws FalhaConexaoException {
-        String sql = "DELETE FROM Vendas WHERE id = ?";
-        try (Connection conexao = Conexao.obtemConexao();
-             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+    // Método para usuário comprar ingressos
+    public static Vendas comprarIngressos(int cinemaId, List<Filmes> filmesSelecionados, double valorTotal) throws FalhaConexaoException {
+        LocalDateTime agora = LocalDateTime.now();
+        Vendas novaVenda = null;
 
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+        String sqlVenda = "INSERT INTO Vendas (data, cinema_id, valor_total) VALUES (?, ?, ?)";
+        String sqlVendaFilmes = "INSERT INTO VendaFilmes (venda_id, filme_id) VALUES (?, ?)";
+
+        try (Connection conexao = Conexao.obtemConexao();
+             PreparedStatement stmtVenda = conexao.prepareStatement(sqlVenda, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement stmtVendaFilmes = conexao.prepareStatement(sqlVendaFilmes)) {
+
+            // Registrar a venda
+            stmtVenda.setTimestamp(1, Timestamp.valueOf(agora));
+            stmtVenda.setInt(2, cinemaId);
+            stmtVenda.setDouble(3, valorTotal);
+            stmtVenda.executeUpdate();
+
+            int idVenda;
+            // Obter o ID da venda gerado automaticamente
+            try (ResultSet rs = stmtVenda.getGeneratedKeys()) {
+                if (rs.next()) {
+                    idVenda = rs.getInt(1);
+                } else {
+                    throw new SQLException("Falha ao obter o ID da venda gerada.");
+                }
+            }
+
+            // Associar os filmes à venda
+            for (Filmes filme : filmesSelecionados) {
+                stmtVendaFilmes.setInt(1, idVenda);
+                stmtVendaFilmes.setInt(2, filme.getId());
+                stmtVendaFilmes.executeUpdate();
+            }
+
+            // Criar a instância de Vendas com Cinema como null
+            novaVenda = new Vendas(idVenda, agora, null, filmesSelecionados, valorTotal);
+
         } catch (SQLException e) {
-            throw new FalhaConexaoException("Erro ao remover venda.");
+            throw new FalhaConexaoException("Erro ao registrar a compra: " + e.getMessage());
         }
+
+        return novaVenda;
     }
+
 
     // Método para carregar todas as vendas
     public static List<Vendas> carregar(List<Cinema> listaCinemas) throws FalhaConexaoException {
@@ -181,4 +214,5 @@ public class VendasDAO {
 
         return listaVendas;
     }
+
 }
