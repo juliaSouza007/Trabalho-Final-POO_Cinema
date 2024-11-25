@@ -66,6 +66,8 @@ public abstract class Cinema {
 
     static public List<Cinema> obtemListaCinemas() { return Cinema.cinemas; }
 
+     static public void setListaCinemas(List<Cinema> cinemas) { Cinema.cinemas = cinemas; }
+
     static protected int obtemProximoID() {
         return proximoID++;
     }
