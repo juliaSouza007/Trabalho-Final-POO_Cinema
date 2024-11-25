@@ -54,7 +54,7 @@ public class VendasDAO {
         }
     }
 
-    public static Vendas buscarPorId(int id) throws FalhaConexaoException {
+    public static Vendas buscarPorId(int id, List<Cinema> lista) throws FalhaConexaoException {
         String sql = "SELECT * FROM Vendas WHERE id = ?";
         try (Connection conexao = Conexao.obtemConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -62,7 +62,16 @@ public class VendasDAO {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Cinema cinema = CinemaDAO.obtemCinema(rs.getInt("cinema_id"));
+                    String[] resul = CinemaDAO.obtemCinema(rs.getInt("cinema_id"));
+                    Cinema cinema = null;
+                    // Verifica qual o cinema na lista de cinemas
+                    for (Cinema c : lista) {
+                        if (c.getId() == Integer.valueOf(resul[0]) &&
+                                c.getNome().equals(resul[1]) &&
+                                c.getLocal().equals(resul[2])) {
+                            cinema = c;
+                        }
+                    }
                     LocalDateTime data = rs.getTimestamp("data").toLocalDateTime();
                     double valorTotal = rs.getDouble("valor_total");
                     return new Vendas(id, data, cinema, null, valorTotal); // Lista de filmes pode ser carregada separadamente
