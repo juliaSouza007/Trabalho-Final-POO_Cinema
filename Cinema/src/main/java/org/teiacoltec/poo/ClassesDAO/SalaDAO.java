@@ -26,7 +26,7 @@ public class SalaDAO {
         }
     }
 
-    public Sala insere(Sala sala) {
+    public static Sala insere(Sala sala) {
 
         String sql = "INSERT INTO Salas (id, nome, capacidade) VALUES (?, ?, ?)";
 
@@ -50,7 +50,7 @@ public class SalaDAO {
         }
     }
 
-    public Sala buscarSala(int id) {
+    public static Sala buscarSala(int id) {
 
         String sql = "SELECT * FROM Salas WHERE id = ?";
         try (Connection conn = Conexao.obtemConexao();
@@ -68,7 +68,7 @@ public class SalaDAO {
         return null;
     }
 
-    public ArrayList<Sala> buscarSalas() {
+    public static ArrayList<Sala> buscarSalas() {
         
         String sql = "SELECT * FROM Salas";
         ArrayList<Sala> salas = new ArrayList<>();
@@ -85,7 +85,7 @@ public class SalaDAO {
         return salas;
     }
 
-    public void atualiza(Sala sala) {
+    public static void atualiza(Sala sala) {
 
         String sql = "UPDATE Salas SET capacidade = ? WHERE nome = ?";
 
@@ -101,7 +101,7 @@ public class SalaDAO {
         }
     }
 
-    public void remove(Sala sala) {
+    public static void remove(Sala sala) {
 
         String sql = "DELETE FROM Salas WHERE nome = ?";
 
