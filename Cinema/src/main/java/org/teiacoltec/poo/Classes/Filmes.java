@@ -17,6 +17,11 @@ public class Filmes {
         this.nome = nome;
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + this.id + '\n' + "Nome: " + this.nome + '\n' + "Duração: " + this.duracao_s + " segundos\n";
+    }
+
     public int getId() {
         return id;
     }
