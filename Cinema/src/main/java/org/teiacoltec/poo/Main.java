@@ -258,8 +258,10 @@ public class Main {
 
                         switch (opcaoUsuario) {
                             case 1:
-                                // Ver Filmes em Cartaz
-                                System.out.println("Filmes em Cartaz: Em construção...");
+                                 ArrayList<Filmes> filmes = new FilmesDAO().buscarFilmes();
+                                for (Filmes filme : filmes) {
+                                    System.out.println("ID: " + filme.getId() + " | Duração: " + filme.getDuracao_s() + " | Filme: " + filme.getNome());
+                                }
                                 break;
                             case 2:
                                 ArrayList<Sessao> sessoesUsuario = new SessaoDAO().buscarTodasSessoes();
