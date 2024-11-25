@@ -19,6 +19,13 @@ public class Main {
 
         List<Cinema> cinemasBD = CinemaDAO.carregar(Cinema.obtemListaCinemas());
 
+        Filmes filme1 = new Filmes(1, 9600, "Wicked");
+        new FilmesDAO().insere(filme1);
+        Filmes filme2 = new Filmes(2, 8220, "Ainda Estou Aqui");
+        new FilmesDAO().insere(filme2);
+        Filmes filme3 = new Filmes(3, 6000, "Moana 2");
+        new FilmesDAO().insere(filme3);
+
         // Menu principal
         int opcao;
         do {
