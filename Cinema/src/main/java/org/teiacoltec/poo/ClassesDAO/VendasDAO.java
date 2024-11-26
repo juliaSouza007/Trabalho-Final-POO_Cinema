@@ -40,7 +40,7 @@ public class VendasDAO {
         try (Connection conexao = Conexao.obtemConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setTimestamp(1, Timestamp.valueOf(venda.getData()));
+            stmt.setTimestamp(1, Timestamp.valueOf(venda.getData().toLocalDateTime()));
             stmt.setInt(2, venda.getCinema().getId());
             stmt.setDouble(3, venda.getValorTotal());
             stmt.executeUpdate();
@@ -66,17 +66,16 @@ public class VendasDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int cinemaId = rs.getInt("cinema_id");
-                    Cinema cinema = obterCinemaPorId(cinemaId, lista);
-                    LocalDateTime data = rs.getTimestamp("data").toLocalDateTime();
-                    double valorTotal = rs.getDouble("valor_total");
+                    Timestamp data = rs.getTimestamp("data");
+                    int quantidadeIngressos= rs.getInt("valor_total");
 
                     // Aqui você deve carregar os filmes relacionados à venda (se necessário)
                     List<Filmes> filmes = carregarFilmesPorVenda(id);
 
-                    return new Vendas(id, data, cinema, filmes, valorTotal);
+                    return new Vendas(id, data, filmes, quantidadeIngressos);
                 }
             }
-        } catch (SQLException | CinemaNaoEncontradaException e) {
+        } catch (SQLException e) {
             throw new FalhaConexaoException("Erro ao buscar venda por ID.");
         }
         return null;
@@ -93,16 +92,15 @@ public class VendasDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int cinemaId = rs.getInt("cinema_id");
-                Cinema cinema = obterCinemaPorId(cinemaId, lista);
-                LocalDateTime data = rs.getTimestamp("data").toLocalDateTime();
-                double valorTotal = rs.getDouble("valor_total");
+                Timestamp data = rs.getTimestamp("data");
+                int valorTotal = rs.getInt("valor_total");
 
                 // Aqui você deve carregar os filmes relacionados à venda (se necessário)
                 List<Filmes> filmes = carregarFilmesPorVenda(id);
 
-                vendas.add(new Vendas(id, data, cinema, filmes, valorTotal));
+                vendas.add(new Vendas(id, data, filmes, valorTotal));
             }
-        } catch (SQLException | CinemaNaoEncontradaException e) {
+        } catch (SQLException e) {
             throw new FalhaConexaoException("Erro ao buscar todas as vendas.");
         }
         return vendas;
@@ -141,10 +139,12 @@ public class VendasDAO {
     }
 
     // Método para usuário comprar ingressos
-    public static Vendas comprarIngressos(int cinemaId, List<Filmes> filmesSelecionados, double valorTotal) throws FalhaConexaoException {
-        LocalDateTime agora = LocalDateTime.now();
+    public static Vendas comprarIngressos(int cinemaId, List<Filmes> filmesSelecionados, int quantidadeIngressos) throws FalhaConexaoException {
+        // Obter a data e hora atual
+        Timestamp agora = Timestamp.valueOf(LocalDateTime.now());
         Vendas novaVenda = null;
 
+        // SQL para registrar a venda e os filmes associados
         String sqlVenda = "INSERT INTO Vendas (data, cinema_id, valor_total) VALUES (?, ?, ?)";
         String sqlVendaFilmes = "INSERT INTO VendaFilmes (venda_id, filme_id) VALUES (?, ?)";
 
@@ -153,9 +153,9 @@ public class VendasDAO {
              PreparedStatement stmtVendaFilmes = conexao.prepareStatement(sqlVendaFilmes)) {
 
             // Registrar a venda
-            stmtVenda.setTimestamp(1, Timestamp.valueOf(agora));
+            stmtVenda.setTimestamp(1, agora);
             stmtVenda.setInt(2, cinemaId);
-            stmtVenda.setDouble(3, valorTotal);
+            stmtVenda.setDouble(3, quantidadeIngressos * 20.0);  // Valor total calculado diretamente aqui
             stmtVenda.executeUpdate();
 
             int idVenda;
@@ -175,8 +175,8 @@ public class VendasDAO {
                 stmtVendaFilmes.executeUpdate();
             }
 
-            // Criar a instância de Vendas com Cinema como null
-            novaVenda = new Vendas(idVenda, agora, null, filmesSelecionados, valorTotal);
+            // Criar a instância de Vendas com o cinema obtido
+            novaVenda = new Vendas(idVenda, agora, filmesSelecionados, quantidadeIngressos);
 
         } catch (SQLException e) {
             throw new FalhaConexaoException("Erro ao registrar a compra: " + e.getMessage());
@@ -198,12 +198,12 @@ public class VendasDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int cinemaId = rs.getInt("cinema_id");
-                LocalDateTime data = rs.getTimestamp("data").toLocalDateTime();
-                double valorTotal = rs.getDouble("valor_total");
+                Timestamp data = rs.getTimestamp("data");
+                int valorTotal = rs.getInt("valor_total");
 
                 Cinema cinema = obterCinemaPorId(cinemaId, listaCinemas);
                 List<Filmes> filmes = carregarFilmesPorVenda(id);
-                Vendas venda = new Vendas(id, data, cinema, filmes, valorTotal);
+                Vendas venda = new Vendas(id, data, filmes, valorTotal);
 
                 listaVendas.add(venda);
             }
