@@ -3,6 +3,7 @@ package org.teiacoltec.poo.Classes;
 import org.teiacoltec.poo.conexao.Conexao;
 import org.teiacoltec.poo.ClassesDAO.FilmesDAO;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Filmes {
    
