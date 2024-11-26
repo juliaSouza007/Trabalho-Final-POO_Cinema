@@ -4,9 +4,10 @@ import org.teiacoltec.poo.Classes.*;
 import org.teiacoltec.poo.ClassesDAO.*;
 import org.teiacoltec.poo.conexao.FalhaConexaoException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static java.util.List.*;
 
 public class Main {
 
@@ -20,6 +21,12 @@ public class Main {
 
        // Carrega os cinemas do Banco de Dados
        Cinema.setListaCinemas(CinemaDAO.carregar(Cinema.obtemListaCinemas()));
+
+
+
+       // Id para vendas e sesssao
+        int idVendas = 0;
+        int idSessao = 0;
 
         // Menu principal
         int opcao;
@@ -81,15 +88,14 @@ public class Main {
                                             String dataSessao = scanner.nextLine();
 
                                             // Adicionar lógica de criar uma sessão
-                                            int id = 1;
-                                            Sessao novaSessao = new Sessao(0, new Sala(id, nomeSala, 0), new org.teiacoltec.poo.Classes.Filmes(idFilme, 230, nomeFilme), java.sql.Timestamp.valueOf(dataSessao));
-                                            id++;
+                                            Sessao novaSessao = new Sessao(idSessao, new Sala(idSessao, nomeSala, 0), new org.teiacoltec.poo.Classes.Filmes(idFilme, 230, nomeFilme), java.sql.Timestamp.valueOf(dataSessao));
+                                            idSessao++;
                                             new SessaoDAO().salvarSessao(novaSessao);
                                             System.out.println("Sessão adicionada com sucesso!");
                                             break;
                                         case 2:
                                             // Listar Sessões
-                                            ArrayList<Sessao> sessoes = new SessaoDAO().buscarTodasSessoes();
+                                            List<Sessao> sessoes = new SessaoDAO().buscarTodasSessoes();
                                             for (Sessao sessao : sessoes) {
                                                 System.out.println("Sessão ID: " + sessao.getId() + " | Sala: " + sessao.getSalaAssociada().getNome() + " | Filme: " + sessao.getFilmeExibido().getNome() + " | Data: " + sessao.getDataSessao());
                                             }
@@ -116,7 +122,7 @@ public class Main {
                                 } while (opcaoSessao != 5);
                                 break;
                             case 3:
-// Gerenciar Cinemas
+                                // Gerenciar Cinemas
                                 int opcaoCinema;
                                 do {
                                     System.out.println("\n*** Gerenciar Cinemas ***");
@@ -219,7 +225,7 @@ public class Main {
                                 } while (opcaoCinema != 0);
                                 break;
                             case 4:
-                                List<Vendas> vendas = VendasDAO.carregar(cinemasBD);
+                                List<Vendas> vendas = VendasDAO.carregar(Cinema.obtemListaCinemas());
                                 for (Vendas venda : vendas) {
                                     System.out.println("Venda ID: " + venda.getId() +
                                             " | Cinema: " + venda.getCinema().getNome() +
@@ -262,7 +268,7 @@ public class Main {
                                 }
                                 break;
                             case 2:
-                                ArrayList<Sessao> sessoesUsuario = new SessaoDAO().buscarTodasSessoes();
+                                List<Sessao> sessoesUsuario = new SessaoDAO().buscarTodasSessoes();
                                 for (Sessao sessao : sessoesUsuario) {
                                     System.out.println("Sessão ID: " + sessao.getId() + " | Sala: " + sessao.getSalaAssociada().getNome() + " | Filme: " + sessao.getFilmeExibido().getNome() + " | Data: " + sessao.getDataSessao());
                                 }
@@ -370,7 +376,7 @@ public class Main {
                     break;
                 case 5:
                     System.out.println("<< Comprar Ingresso >>");
-                    ArrayList<Sessao> sessoesDisponiveis = new SessaoDAO().buscarTodasSessoes();
+                    List<Sessao> sessoesDisponiveis = new SessaoDAO().buscarTodasSessoes();
 
                     if (sessoesDisponiveis.isEmpty()) {
                         System.out.println("Não há sessões disponíveis no momento.");
@@ -411,9 +417,10 @@ public class Main {
                         break;
                     }
 
-                    // Registrar a compra (implementação simples)
-                    //Vendas novaVenda = new Vendas(0, sessaoEscolhida.getSalaAssociada(),
-                            java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), quantidadeIngressos * 20.0, List.of(sessaoEscolhida.getFilmeExibido()));
+                    // Registrar a compra
+                    List<Filmes> filmes = Arrays.asList(sessaoEscolhida.getFilmeExibido());  // Criando a lista com um único filme
+                    Vendas novaVenda = new Vendas(idVendas, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), filmes, quantidadeIngressos);
+                    idVendas++;
 
                     //VendasDAO.salvar(novaVenda);
                     System.out.println("Compra realizada com sucesso! Você comprou " + quantidadeIngressos + " ingressos para o filme " +
