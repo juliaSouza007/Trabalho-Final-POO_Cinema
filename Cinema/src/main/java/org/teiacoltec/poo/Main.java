@@ -10,6 +10,10 @@ import java.util.*;
 import static java.util.List.*;
 
 public class Main {
+    
+    static public void iniciaTabelas() {
+        
+    }
 
     public static void main(String[] args) throws FalhaConexaoException {
         Scanner scanner = new Scanner(System.in);
@@ -21,8 +25,6 @@ public class Main {
 
        // Carrega os cinemas do Banco de Dados
        Cinema.setListaCinemas(CinemaDAO.carregar(Cinema.obtemListaCinemas()));
-
-
 
        // Id para vendas e sesssao
         int idVendas = 0;
