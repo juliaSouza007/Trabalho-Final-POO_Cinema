@@ -1,21 +1,22 @@
 package org.teiacoltec.poo.Classes;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Vendas {
     private int id;
-    private LocalDateTime data;
+    private Timestamp data;
     private Cinema cinema;
     private List<Filmes> filmes;
     private double valorTotal;
 
-    public Vendas(int id, LocalDateTime data, Cinema cinema, List<Filmes> filmes, double valorTotal) {
+    public Vendas(int id, Timestamp data, List<Filmes> filmes, int quantidadeIngressos) {
         this.id = id;
         this.data = data;
         this.cinema = cinema;
         this.filmes = filmes;
-        this.valorTotal = valorTotal;
+        this.valorTotal = quantidadeIngressos * 20.0;
     }
 
     // Getters e Setters
@@ -27,11 +28,11 @@ public class Vendas {
         this.id = id;
     }
 
-    public LocalDateTime getData() {
+    public Timestamp getData() {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public void setData(Timestamp data) {
         this.data = data;
     }
 
