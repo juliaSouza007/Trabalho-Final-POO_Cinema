@@ -48,7 +48,7 @@ public class Cinesercla extends Cinema{
         if (Cinesercla.proximoIDSala3D >= 10) {
             throw new LimiteSalasException();
         } else {
-            Sala sala = new Sala(Cinesercla.proximoIDSala, nome, capacidade);
+            Sala sala = new Sala(Cinesercla.proximoIDSala, nome, capacidade, this.getId());
             SalaDAO.insere(sala);
             this.salas[Cinesercla.proximoIDSala3D] = sala;
             Cinesercla.proximoIDSala3D++;
